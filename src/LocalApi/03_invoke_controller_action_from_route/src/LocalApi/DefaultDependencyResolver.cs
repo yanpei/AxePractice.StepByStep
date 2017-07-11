@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LocalApi
 {
     class DefaultDependencyResolver : IDependencyResolver
     {
         #region Please modify the following code to pass the test
+
+        readonly List<Type> ControllerTypes;
 
         /*
          * The dependency resolver is kind of a IoC service to create instances for
@@ -24,17 +27,27 @@ namespace LocalApi
 
         internal DefaultDependencyResolver(IEnumerable<Type> controllerTypes)
         {
-            throw new NotImplementedException();
+            ControllerTypes = controllerTypes.ToList();
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            
         }
 
         public object GetService(Type type)
         {
-            throw new NotImplementedException();
+            if (!ControllerTypes.Contains(type)) return null;
+
+            try
+            {
+                return Activator.CreateInstance(type);
+            }
+            catch(Exception )
+            {
+                return null;
+            }
+
         }
 
         #endregion

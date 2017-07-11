@@ -25,7 +25,17 @@ namespace LocalApi
 
         public static HttpResponseMessage InvokeAction(HttpRoute matchedRoute, IDependencyResolver resolver)
         {
-            return InvokeActionInternal(new ActionDescriptor(null, matchedRoute.ActionName, matchedRoute.MethodConstraint));
+            HttpController controller = resolver.GetService(matchedRoute.ControllerType) as HttpController;
+            try
+            {
+                return InvokeActionInternal(new ActionDescriptor(controller, matchedRoute.ActionName,
+                    matchedRoute.MethodConstraint));
+            }
+            catch
+            {
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+
         }
 
         #endregion
