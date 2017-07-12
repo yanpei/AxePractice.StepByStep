@@ -25,9 +25,17 @@ namespace LocalApi
              * controller type collection returned by IHttpControllerTypeResolver and
              * IDependencyResolver.
              */
-
-            return InvokeActionInternal(
-                new ActionDescriptor(null, matchedRoute.ActionName, matchedRoute.MethodConstraint));
+            try
+            {
+                var controller = controllerFactory.CreateController(matchedRoute.ControllerName, controllerTypes,
+                    resolver);
+                return InvokeActionInternal(
+                    new ActionDescriptor(controller, matchedRoute.ActionName, matchedRoute.MethodConstraint));
+            }
+            catch
+            {
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
 
             #endregion
         }

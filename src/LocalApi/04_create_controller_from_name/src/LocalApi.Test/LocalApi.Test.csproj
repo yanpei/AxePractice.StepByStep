@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LocalApi.Test.Controllers\LocalApi.Test.Controllers.csproj">
-      <Project>{EBB31EC6-21F8-4DBE-AC57-F2AE847835E2}</Project>
+      <Project>{ebb31ec6-21f8-4dbe-ac57-f2ae847835e2}</Project>
       <Name>LocalApi.Test.Controllers</Name>
     </ProjectReference>
     <ProjectReference Include="..\LocalApi\LocalApi.csproj">
