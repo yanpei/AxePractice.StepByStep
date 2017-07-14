@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 
 namespace LocalApi.Routing
 {
@@ -19,6 +20,12 @@ namespace LocalApi.Routing
 
         public HttpRoute(string controllerName, string actionName, HttpMethod methodConstraint, string uriTemplate)
         {
+            if(controllerName == null) throw new ArgumentNullException(nameof(controllerName));
+            var validator = "^[A-Za-z]+[A-Za-z0-9]+$";
+            if(!Regex.IsMatch(controllerName, validator)) throw new ArgumentException(nameof(controllerName));
+            if (actionName == null) throw new ArgumentNullException(nameof(actionName));
+            if(!Regex.IsMatch(actionName, validator)) throw new ArgumentException(nameof(actionName));
+            if(methodConstraint == null) throw new ArgumentNullException(nameof(methodConstraint));
             ControllerName = controllerName;
             ActionName = actionName;
             MethodConstraint = methodConstraint;

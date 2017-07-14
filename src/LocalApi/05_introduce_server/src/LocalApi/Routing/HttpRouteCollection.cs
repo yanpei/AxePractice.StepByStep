@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 
 namespace LocalApi.Routing
@@ -12,15 +14,23 @@ namespace LocalApi.Routing
          * add additional field or private method but you should not modify the 
          * public interfaces.
          */
+        readonly ISet<HttpRoute> httpRoutes = new HashSet<HttpRoute>();
 
         public void Add(HttpRoute route)
         {
-            throw new NotImplementedException();
+            if(route == null) throw  new ArgumentNullException(nameof(route));
+
+            if(route.UriTemplate == null) throw new ArgumentException();
+
+
+            httpRoutes.Add(route);
         }
 
         public HttpRoute GetRouteData(HttpRequestMessage request)
         {
-            throw new NotImplementedException();
+            if(request == null) throw new ArgumentNullException(nameof(request));
+            var routes = httpRoutes.Where(route => route.IsMatch(request.RequestUri, request.Method)).ToArray();
+            return routes.FirstOrDefault();
         }
 
         #endregion
