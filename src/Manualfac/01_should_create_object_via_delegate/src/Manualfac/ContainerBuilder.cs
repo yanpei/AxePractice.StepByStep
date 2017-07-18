@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Manualfac
 {
     public class ContainerBuilder
     {
+
         #region Please modify the following code to pass the test
 
         /*
@@ -16,15 +18,19 @@ namespace Manualfac
          * 
          * You can add non-public member functions or member variables as you like.
          */
+        readonly IList<Delegate> registrationInformations = new List<Delegate>();
+        bool isBuilded = false;
 
         public void Register<T>(Func<IComponentContext, T> func)
         {
-            throw new NotImplementedException();
+            registrationInformations.Add(func);
         }
 
         public IComponentContext Build()
         {
-            throw new NotImplementedException();
+            if(isBuilded) throw new InvalidOperationException();
+            isBuilded = true;
+            return new ComponentContext(registrationInformations);
         }
 
         #endregion
