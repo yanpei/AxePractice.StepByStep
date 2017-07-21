@@ -44,8 +44,19 @@ namespace Manualfac
              * In order to reuse the code, we re-implement the extension method to replace the
              * instance member function.
              */
+            
+            var registrationBuilder = new RegistrationBuilder
+            {
+                Activator = registration.Activator,
+                Service = registration.Service
+            };
 
-            throw new NotImplementedException();
+            cb.RegisterCallback(componentRegistry =>
+            {
+                componentRegistry.Register(new ComponentRegistration(registrationBuilder.Service, registrationBuilder.Activator));
+            });
+
+            return registrationBuilder;
 
             #endregion
         }
