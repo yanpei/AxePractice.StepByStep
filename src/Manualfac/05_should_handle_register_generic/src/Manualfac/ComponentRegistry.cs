@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Manualfac.Sources;
 
 namespace Manualfac
 {
@@ -39,7 +40,15 @@ namespace Manualfac
              * return fasle. If we have found one. Then create a concrete component registration
              * and add it to serviceInfos for speed acceleration.
              */
-            throw new NotImplementedException();
+            registration = sources.Select(s => s.RegistrationFor(service)).FirstOrDefault(r => r != null);
+
+            if (registration != null)
+            {
+                return true;
+            }
+
+            return false;
+
 
             #endregion
         }

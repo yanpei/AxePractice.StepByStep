@@ -53,7 +53,8 @@ namespace Manualfac.Test
         {
             const string name = "n";
             var cb = new ContainerBuilder();
-            cb.RegisterGeneric(typeof(G<>))
+            var registerGeneric = cb.RegisterGeneric(typeof(G<>));
+            var registrationBuilder = registerGeneric
                 .Named(name, typeof(IG<>));
             var c = cb.Build();
 
