@@ -25,7 +25,12 @@ namespace Manualfac
 
             #region Please initialize root scope
 
-            throw new NotImplementedException();
+            if (parent != null)
+            {
+                RootScope = parent.RootScope;
+                return;
+            }
+            RootScope = this;
 
             #endregion
         }
@@ -56,8 +61,20 @@ namespace Manualfac
              */
 
             #region Please implement this method
+            if(registration == null) throw new ArgumentNullException(nameof(registration));
 
-            throw new NotImplementedException();
+            if (sharedInstances.ContainsKey(registration.Service))
+            {
+                return sharedInstances[registration.Service];
+            }
+
+            var resolveComponent = registration.Activator.Activate(this);
+            if (registration.Sharing == InstanceSharing.Shared)
+            {
+                sharedInstances[registration.Service] = resolveComponent;
+            }
+            Disposer.AddItemsToDispose(resolveComponent);
+            return resolveComponent;
 
             #endregion
         }
@@ -70,8 +87,7 @@ namespace Manualfac
              * Create a child life-time scope in this method.
              */
 
-            throw new NotImplementedException();
-
+            return new LifetimeScope(componentRegistry, this);
             #endregion
         }
 
@@ -83,8 +99,13 @@ namespace Manualfac
              * This method will try get component registration from component registry.
              * We extract this method for isolation of responsibility.
              */
-
-            throw new NotImplementedException();
+            
+            ComponentRegistration componentRegistration;
+            if (!componentRegistry.TryGetRegistration(service, out componentRegistration))
+            {
+                throw new DependencyResolutionException($"Cannot find registration: {service}");
+            }
+            return componentRegistration;
 
             #endregion
         }
